@@ -21,4 +21,12 @@
     <string name="settings_logout">Logout</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="empty_inbox_label">No new messages</string>
+
+    <string-array name="camera_options">
+        <item>Take Photo</item>
+        <item>Take Video</item>
+        <item>Choose Photo</item>
+        <item>Choose Video</item>
+    </string-array>
+
 </resources>

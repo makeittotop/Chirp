@@ -1,5 +1,7 @@
 package io.abhishekpareek.app.chirp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -108,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
-
-        if (id == R.id.action_logout) {
+        } else if (id == R.id.action_logout) {
             setProgressBarIndeterminateVisibility(true);
 
             ParseUser.logOutInBackground(new LogOutCallback() {
@@ -132,6 +132,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+        } else if (id == R.id.action_camera) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setItems(R.array.camera_options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                    }
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
