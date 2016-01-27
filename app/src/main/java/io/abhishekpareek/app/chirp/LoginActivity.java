@@ -37,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     Button mLoginButton;
     @Bind(R.id.signupTextView)
     TextView mSignupTextView;
+    @Bind(R.id.resetPassTextView) TextView mResetPassTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +123,14 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        mResetPassTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                startActivity(i);
             }
         });
     }

@@ -14,10 +14,10 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value="3ry5A1YhcABiAYxeRt19tBOcuTjCD9ACmlohy2HB" />
+            android:value="3ry5A1YhcABiAYxeRt19tBOcuTjCD9ACmlohy2HB"/>
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="8mSqoaxMUN2bT8W40RYIxfAegwYvKaWSSSWnmpQC" />
+            android:value="8mSqoaxMUN2bT8W40RYIxfAegwYvKaWSSSWnmpQC"/>
 
         <activity
             android:name=".MainActivity"
@@ -38,13 +38,23 @@
         </activity>
         <activity
             android:name=".SignupActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".LoginActivity"
             android:label="@string/title_activity_signup"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value=".LoginActivity"/>
+        </activity>
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:label="@string/title_activity_reset_password"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.abhishekpareek.app.chirp.LoginActivity"/>
         </activity>
     </application>
 

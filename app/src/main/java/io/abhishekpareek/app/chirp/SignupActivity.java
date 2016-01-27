@@ -128,8 +128,21 @@ public class SignupActivity extends AppCompatActivity {
                                             setProgressBarIndeterminateVisibility(false);
 
                                             if (e == null) {
-                                                mSnackbar.setText("Signup Successful!").show();
-                                                finish();
+                                                // An email was successfully sent with reset instructions.
+                                                String msg = "Signup Successful";
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
+                                                builder.setTitle(getApplicationContext().getString(R.string.alert_title))
+                                                        //.setMessage(context.getString(R.string.error_message))
+                                                        .setMessage(msg)
+                                                        .setPositiveButton(getApplicationContext().getString(R.string.alert_ok), new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                finish();
+                                                            }
+                                                        });
+
+                                                AlertDialog dialog = builder.create();
+                                                dialog.show();
                                                 /*
                                                 Intent i = new Intent(SignupActivity.this, MainActivity.class);
                                                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
