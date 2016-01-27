@@ -3,6 +3,8 @@ package io.abhishekpareek.app.chirp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +30,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity {
+import java.net.URI;
 
+public class MainActivity extends AppCompatActivity {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -44,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private Uri mFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser == null) {
             toLogin();
         }
-
     }
 
     private void toLogin() {
@@ -137,14 +142,24 @@ public class MainActivity extends AppCompatActivity {
             builder.setItems(R.array.camera_options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    Intent intent;
                     switch (which) {
                         case 0:
+                            intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivity(intent);
                             break;
                         case 1:
+                            intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                            startActivity(intent);
                             break;
                         case 2:
+                            intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivity(intent);
                             break;
                         case 3:
+                            intent = new Intent(Intent.ACTION_PICK, null);
+                            intent.setType("video/*");
+                            startActivity(intent);
                             break;
                     }
                 }
