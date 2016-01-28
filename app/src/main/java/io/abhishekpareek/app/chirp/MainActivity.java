@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
+    private  static final int GET_PHOTO_REQUEST_CODE = 300;
+    private  static final int GET_VIDEO_REQUEST_CODE = 400;
+
     private Uri mFileUri;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -223,13 +226,14 @@ public class MainActivity extends AppCompatActivity {
                             startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
                             break;
                         case 2:
-                            intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivity(intent);
+                            intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, GET_PHOTO_REQUEST_CODE);
                             break;
                         case 3:
-                            intent = new Intent(Intent.ACTION_PICK, null);
+                            intent = new Intent(Intent.ACTION_GET_CONTENT);
                             intent.setType("video/*");
-                            startActivity(intent);
+                            startActivityForResult(intent, GET_VIDEO_REQUEST_CODE);
                             break;
                     }
                 }
@@ -253,13 +257,12 @@ public class MainActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case (CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE):
-                if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-                    if (resultCode == RESULT_OK) {
-                        galleryAddPic();
+                if (resultCode == RESULT_OK) {
+                    galleryAddPic();
 
-                        // Image captured and saved to fileUri specified in the Intent
-                        String msg = "Image saved to the gallery!";
-                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                    // Image captured and saved to fileUri specified in the Intent
+                    String msg = "Image saved to the gallery!";
+                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                         /*
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setMessage(msg)
@@ -267,21 +270,20 @@ public class MainActivity extends AppCompatActivity {
                         AlertDialog dialog = builder.create();
                         dialog.show();
                         */
-                    } else if (resultCode == RESULT_CANCELED) {
+                } else if (resultCode == RESULT_CANCELED) {
                         // User cancelled the image capture
-                    } else {
+                } else {
                         // Image capture failed, advise user
-                    }
+                        //
                 }
                 break;
             case (CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE):
-                if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-                    if (resultCode == RESULT_OK) {
-                        galleryAddPic();
+                if (resultCode == RESULT_OK) {
+                    galleryAddPic();
 
-                        // Video captured and saved to fileUri specified in the Intent
-                        String msg = "Video saved to the gallery";
-                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                    // Video captured and saved to fileUri specified in the Intent
+                    String msg = "Video saved to the gallery";
+                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                         /*
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setMessage(msg)
@@ -289,12 +291,28 @@ public class MainActivity extends AppCompatActivity {
                         AlertDialog dialog = builder.create();
                         dialog.show();
                         */
-                    } else if (resultCode == RESULT_CANCELED) {
+                } else if (resultCode == RESULT_CANCELED) {
                         // User cancelled the video capture
-                    } else {
+                } else {
                         // Video capture failed, advise user
+                }
+                break;
+            case (GET_PHOTO_REQUEST_CODE):
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        String msg = "Chosen photo: " + data.getData();
+                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                     }
                 }
+                break;
+            case (GET_VIDEO_REQUEST_CODE):
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        String msg = "Chosen video: " + data.getData();
+                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
             default:
                 break;
         }
