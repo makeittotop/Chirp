@@ -23,8 +23,19 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
+        Fragment frag = null;
         // getItem is called to instantiate the fragment for the given page.
-        return InboxFragment.newInstance(mContext, position + 1);
+        switch (position) {
+            case 0:
+                frag = InboxFragment.newInstance(position + 1);
+                break;
+            case 1:
+                frag = SecondFragment.newInstance(position + 1);
+                break;
+        }
+
+        return frag;
     }
 
     @Override
@@ -36,9 +47,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "SECTION 1";
+                return "INBOX";
             case 1:
-                return "SECTION 2";
+                return "SECOND";
         }
         return null;
     }
