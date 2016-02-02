@@ -5,7 +5,7 @@ package io.abhishekpareek.app.chirp;
  */
 public class ListUploadImage {
     String mPath;
-    Double mSize;
+    String mSize;
 
     public String getPath() {
         return mPath;
@@ -15,11 +15,11 @@ public class ListUploadImage {
         mPath = path;
     }
 
-    public Double getSize() {
+    public String getSize() {
         return mSize;
     }
 
-    public void setSize(Double size) {
+    public void setSize(String  size) {
         mSize = size;
     }
 }

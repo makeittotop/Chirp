@@ -92,9 +92,16 @@ public class SecondCustomAdapter extends RecyclerView.Adapter<SecondCustomAdapte
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         //viewHolder.getTextView().setText(mDataSet[position]);
-        viewHolder.getUploadImageSize().setText(String.valueOf(mDataSet.get(position).getSize()));
+        viewHolder.getUploadImageSize().setText(mDataSet.get(position).getSize());
         Bitmap bm = BitmapFactory.decodeFile(mDataSet.get(position).getPath());
-        viewHolder.getUploadImage().setImageBitmap(bm);
+        int srcWidth = bm.getWidth();
+        int srcHeight = bm.getHeight();
+        int dstWidth = (int)(srcWidth*0.25f);
+        int dstHeight = (int)(srcHeight*0.25f);
+
+        //viewHolder.getUploadImage().setImageBitmap(Bitmap.createScaledBitmap(bm, dstWidth, dstHeight, false));
+        viewHolder.getUploadImage().setImageBitmap(Bitmap.createScaledBitmap(bm, 300, 400, false));
+
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
 

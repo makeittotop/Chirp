@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
@@ -23,6 +24,7 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -248,21 +250,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        ArrayList<ListUploadImage> images = new ArrayList<>();
         switch (requestCode) {
             case (CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE):
                 if (resultCode == RESULT_OK) {
                     galleryAddPic();
-
                     // Image captured and saved to fileUri specified in the Intent
-                    String msg = "Image saved to the gallery!";
-                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-                        /*
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage(msg)
-                                .setPositiveButton("OK", null);
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        */
+                    String filePath = mFileUri.getPath();
+                    images.add(getListUploadImage(filePath));
                 } else if (resultCode == RESULT_CANCELED) {
                         // User cancelled the image capture
                 } else {
@@ -273,17 +268,8 @@ public class MainActivity extends AppCompatActivity {
             case (CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE):
                 if (resultCode == RESULT_OK) {
                     galleryAddPic();
-
-                    // Video captured and saved to fileUri specified in the Intent
-                    String msg = "Video saved to the gallery";
-                    Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-                        /*
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage(msg)
-                                .setPositiveButton("OK", null);
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        */
+                    String filePath = mFileUri.getPath();
+                    images.add(getListUploadImage(filePath));
                 } else if (resultCode == RESULT_CANCELED) {
                         // User cancelled the video capture
                 } else {
@@ -293,28 +279,58 @@ public class MainActivity extends AppCompatActivity {
             case (GET_PHOTO_REQUEST_CODE):
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
-                        String msg = "Chosen photo: " + data.getData();
-                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                        if (data.getData() != null) {
+                            String filePath = Utils.getFilePathFromURI(MainActivity.this, data.getData());
+                            images.add(getListUploadImage(filePath));
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            if (data.getClipData() != null) {
+                                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                                    String filePath = Utils.getFilePathFromURI(MainActivity.this, data.getClipData().getItemAt(i).getUri());
+                                    images.add(getListUploadImage(filePath));
+                                }
 
-                        String filePath = GetFilePathFromDevice.getPath(MainActivity.this, data.getData());
-                        Log.d(TAG, filePath);
+                            } else {
 
-                        //getSupportFragmentManager().getFragments();
-                        mSectionsPagerAdapter.getSecondFragment().setUploadImagesData(filePath);
+                            }
+                        }
                     }
                 }
                 break;
             case (GET_VIDEO_REQUEST_CODE):
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
-                        String msg = "Chosen video: " + data.getData();
-                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                        if (data.getData() != null) {
+                            String filePath = Utils.getFilePathFromURI(MainActivity.this, data.getData());
+                            Log.d(TAG, filePath);
+                            images.add(getListUploadImage(filePath));
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            if (data.getClipData() != null) {
+                                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                                    String filePath = Utils.getFilePathFromURI(MainActivity.this, data.getClipData().getItemAt(i).getUri());
+                                    images.add(getListUploadImage(filePath));
+                                }
+
+                            } else {
+
+                            }
+                        }
                     }
                 }
                 break;
             default:
                 break;
         }
+        mSectionsPagerAdapter.getSecondFragment().setUploadImagesData(images);
+    }
+
+    @NonNull
+    private ListUploadImage getListUploadImage(String filePath) {
+        String fileSize = Utils.getFileSize(filePath);
+
+        ListUploadImage listUploadImage = new ListUploadImage();
+        listUploadImage.setPath(filePath);
+        listUploadImage.setSize(fileSize);
+        return listUploadImage;
     }
 }
 

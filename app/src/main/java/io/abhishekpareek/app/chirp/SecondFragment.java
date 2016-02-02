@@ -43,8 +43,6 @@ public class SecondFragment extends Fragment implements AdapterView.OnItemClickL
     //private ArrayList<ListPerson> mListPersons;
     private ArrayList<ListUploadImage> mListUploadImages;
 
-    private String mFoo;
-
     public SecondFragment() {
     }
 
@@ -116,14 +114,8 @@ public class SecondFragment extends Fragment implements AdapterView.OnItemClickL
         return images;
     }
 
-    protected void setUploadImagesData(String path) {
-        Log.d("Image Path: ", path);
-
-        ListUploadImage listUploadImage = new ListUploadImage();
-        listUploadImage.setPath(path);
-        listUploadImage.setSize(0.0);
-
-        mListUploadImages.add(listUploadImage);
+    protected void setUploadImagesData(ArrayList<ListUploadImage> images) {
+        mListUploadImages.addAll(images);
         mAdapter.notifyDataSetChanged();
     }
 

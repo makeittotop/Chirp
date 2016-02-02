@@ -10,11 +10,13 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import java.io.File;
+
 /**
  * Created by apareek on 2/1/16.
  */
 
-public final class GetFilePathFromDevice {
+public final class Utils {
 
     /**
      * Get file path from URI
@@ -24,7 +26,7 @@ public final class GetFilePathFromDevice {
      * @return path of given URI
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static String getPath(final Context context, final Uri uri) {
+    public static String getFilePathFromURI(final Context context, final Uri uri) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
@@ -106,5 +108,19 @@ public final class GetFilePathFromDevice {
 
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public static String getFileSize(String f) {
+        // Get file from file name
+        File file = new File(f);
+
+        // Get length of file in bytes
+        long fileSizeInBytes = file.length();
+        // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+        double fileSizeInKB = fileSizeInBytes / 1024;
+        // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+        double fileSizeInMB = fileSizeInKB / 1024;
+
+        return String.format("File size: %.2f", fileSizeInMB) + " MB";
     }
 }
