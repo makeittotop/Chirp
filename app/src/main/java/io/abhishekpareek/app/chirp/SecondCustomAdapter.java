@@ -5,6 +5,8 @@ package io.abhishekpareek.app.chirp;
  */
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 public class SecondCustomAdapter extends RecyclerView.Adapter<SecondCustomAdapter.ViewHolder> {
     private static final String TAG = "SecondCustomAdapter";
 
-    private ArrayList<ListPerson> mDataSet;
+    private ArrayList<ListUploadImage> mDataSet;
 
     // BEGIN_INCLUDE(recyclerViewSampleViewHolder)
     /**
@@ -29,9 +31,8 @@ public class SecondCustomAdapter extends RecyclerView.Adapter<SecondCustomAdapte
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //private final TextView textView;
-        TextView personName;
-        TextView personAge;
-        ImageView personPhoto;
+        TextView uploadImageSize;
+        ImageView uploadImage;
 
         public ViewHolder(View v) {
             super(v);
@@ -42,27 +43,31 @@ public class SecondCustomAdapter extends RecyclerView.Adapter<SecondCustomAdapte
                     Log.d(TAG, "Element " + getPosition() + " clicked.");
                 }
             });
-            personName = (TextView)itemView.findViewById(R.id.person_name);
-            personAge = (TextView)itemView.findViewById(R.id.person_age);
-            personPhoto = (ImageView)itemView.findViewById(R.id.person_photo);
+            uploadImageSize = (TextView)itemView.findViewById(R.id.upload_image_size);
+            uploadImage = (ImageView)itemView.findViewById(R.id.upload_image);
         }
 
-        public TextView getPersonName() {
-            return personName;
+        public ImageView getUploadImage() {
+            return uploadImage;
         }
 
-        public ImageView getPersonPhoto() {
-            return personPhoto;
+        public void setUploadImage(ImageView uploadImage) {
+            this.uploadImage = uploadImage;
         }
 
-        public TextView getPersonAge() {
-            return personAge;
+        public TextView getUploadImageSize() {
+            return uploadImageSize;
         }
+
+        public void setUploadImageSize(TextView uploadImageSize) {
+            this.uploadImageSize = uploadImageSize;
+        }
+
     }
     // END_INCLUDE(recyclerViewSampleViewHolder)
 
 
-    public SecondCustomAdapter(ArrayList<ListPerson> dataSet) {
+    public SecondCustomAdapter(ArrayList<ListUploadImage> dataSet) {
         mDataSet = dataSet;
     }
 
@@ -87,9 +92,9 @@ public class SecondCustomAdapter extends RecyclerView.Adapter<SecondCustomAdapte
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         //viewHolder.getTextView().setText(mDataSet[position]);
-        viewHolder.getPersonAge().setText(mDataSet.get(position).getAge());
-        viewHolder.getPersonName().setText(mDataSet.get(position).getName());
-        viewHolder.getPersonPhoto().setImageResource(mDataSet.get(position).getPhotoId());
+        viewHolder.getUploadImageSize().setText(String.valueOf(mDataSet.get(position).getSize()));
+        Bitmap bm = BitmapFactory.decodeFile(mDataSet.get(position).getPath());
+        viewHolder.getUploadImage().setImageBitmap(bm);
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)
 

@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
 
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -295,6 +295,12 @@ public class MainActivity extends AppCompatActivity {
                     if (data != null) {
                         String msg = "Chosen photo: " + data.getData();
                         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+
+                        String filePath = GetFilePathFromDevice.getPath(MainActivity.this, data.getData());
+                        Log.d(TAG, filePath);
+
+                        //getSupportFragmentManager().getFragments();
+                        mSectionsPagerAdapter.getSecondFragment().setUploadImagesData(filePath);
                     }
                 }
                 break;

@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,11 +36,14 @@ public class SecondFragment extends Fragment implements AdapterView.OnItemClickL
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
-    protected RecyclerView mRecyclerView;
+    protected EmptyRecyclerView mRecyclerView;
     protected SecondCustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected String[] mDataset;
-    private ArrayList<ListPerson> mListPersons;
+    //private ArrayList<ListPerson> mListPersons;
+    private ArrayList<ListUploadImage> mListUploadImages;
+
+    private String mFoo;
 
     public SecondFragment() {
     }
@@ -59,11 +64,18 @@ public class SecondFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        String foo = getArguments().getString("edttext");
+        Log.d(getActivity().getClass().getSimpleName(), "Second Fragment " + foo);
+
         View rootView = inflater.inflate(R.layout.fragment_second, container, false);
 
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
+        mRecyclerView = (EmptyRecyclerView) rootView.findViewById(R.id.rv);
         mRecyclerView.setHasFixedSize(true);
+
+        TextView empTextView = (TextView) rootView.findViewById(R.id.emptyList);
+        mRecyclerView.setEmptyView(empTextView);
+
         mLayoutManager = new LinearLayoutManager(getActivity());
 
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
@@ -76,28 +88,43 @@ public class SecondFragment extends Fragment implements AdapterView.OnItemClickL
 
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mListPersons = initializeData();
+        //mListPersons = initializeData();
+        mListUploadImages = initializeData();
         //listData = getListData();
-        mAdapter = new SecondCustomAdapter(mListPersons);
+        mAdapter = new SecondCustomAdapter(mListUploadImages);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
 
-    private ArrayList<ListPerson> initializeData() {
-        ArrayList<ListPerson> persons = new ArrayList<ListPerson>();
-        persons.add(new ListPerson("Emma Wilson", "23 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Lavery Maiss", "25 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Lillie Watts", "35 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Emma Wilson", "23 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Lavery Maiss", "25 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Lillie Watts", "35 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Emma Wilson", "23 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Lavery Maiss", "25 years old", R.drawable.placeholder));
-        persons.add(new ListPerson("Lillie Watts", "35 years old", R.drawable.placeholder));
+    private ArrayList<ListUploadImage> initializeData() {
+        ArrayList<ListUploadImage> images = new ArrayList<ListUploadImage>();
 
-        return persons;
+        /*
+        persons.add(new ListPerson("Emma Wilson", "23 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Lavery Maiss", "25 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Lillie Watts", "35 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Emma Wilson", "23 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Lavery Maiss", "25 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Lillie Watts", "35 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Emma Wilson", "23 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Lavery Maiss", "25 years old", R.drawable.placeholder));
+        persons.add(new ListPerson("Lillie Watts", "35 years old", R.drawable.placeholder));
+        */
+
+        return images;
+    }
+
+    protected void setUploadImagesData(String path) {
+        Log.d("Image Path: ", path);
+
+        ListUploadImage listUploadImage = new ListUploadImage();
+        listUploadImage.setPath(path);
+        listUploadImage.setSize(0.0);
+
+        mListUploadImages.add(listUploadImage);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {

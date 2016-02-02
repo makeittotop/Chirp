@@ -4,7 +4,15 @@
              android:layout_height="match_parent"
              tools:context="io.abhishekpareek.app.chirp.SecondFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <TextView
+        android:id="@+id/emptyList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Select atleast an image/video to begin"
+        android:textSize="25sp" />
+
+    <io.abhishekpareek.app.chirp.EmptyRecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rv"
